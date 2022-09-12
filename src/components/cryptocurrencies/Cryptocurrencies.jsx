@@ -18,9 +18,14 @@ export const Cryptocurrencies = () => {
     const res = await axios.get(`https://api.coincap.io/v2/assets`);
     // const data=await res.data
     setCrypto(res.data.data);
+    
     console.log("cryptoData", res.data);
   };
 
+  useEffect(() => {
+    loopWithSlice(0, DataPerPage);
+    
+  }, []);
   
 
   const loopWithSlice = (start, end) => {
@@ -29,10 +34,6 @@ export const Cryptocurrencies = () => {
     setDataToShow(arrayForHoldingData);
   };
 
-  useEffect(() => {
-    loopWithSlice(0, DataPerPage);
-    
-  }, [DataPerPage]);
 
   const handleShowMoreData = () => {
     loopWithSlice(next, next + DataPerPage);
