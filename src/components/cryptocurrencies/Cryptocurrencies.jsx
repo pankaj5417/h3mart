@@ -6,41 +6,23 @@ import "./cryptocurrencies.css";
 export const Cryptocurrencies = () => {
   const [crypto, setCrypto] = useState([]);
 
-  const [dataToShow, setDataToShow] = useState([]);
-  const [next, setNext] = useState(0);
-  let arrayForHoldingData = [];
-  const DataPerPage = 50;
+  const [next, setNext] = useState(50);
+
   useEffect(() => {
     getCryptoData();
   }, []);
 
   const getCryptoData = async () => {
     const res = await axios.get(`https://api.coincap.io/v2/assets`);
-    // const data=await res.data
     setCrypto(res.data.data);
-    
+
     console.log("cryptoData", res.data);
   };
 
-  useEffect(() => {
-    loopWithSlice(0, DataPerPage);
-    
-  }, []);
-  
-
-  const loopWithSlice = (start, end) => {
-    const slicedData = crypto.slice(start, end);
-    arrayForHoldingData = [...arrayForHoldingData, ...slicedData];
-    setDataToShow(arrayForHoldingData);
-  };
-
-
   const handleShowMoreData = () => {
-    loopWithSlice(next, next + DataPerPage);
-    setNext(next + DataPerPage);
+    setNext((prev) => prev + 50);
   };
 
-  
   return (
     <>
       <div className="cryptoContainer container w-75">
@@ -60,7 +42,7 @@ export const Cryptocurrencies = () => {
             </tr>
           </thead>
           <tbody>
-            {dataToShow?.map((item, index) => (
+            {crypto.slice(0, next)?.map((item, index) => (
               <>
                 <tr key={index}>
                   <th scope="row">{item.rank}</th>
@@ -84,13 +66,15 @@ export const Cryptocurrencies = () => {
                   <td>${(+item.supply).toFixed(2)}</td>
                   <td>${(+item.volumeUsd24Hr).toFixed(2)}</td>
 
-                  <td>${(+item.changePercent24Hr).toFixed(2)}</td>
+                  <td>{(+item.changePercent24Hr).toFixed(2)}</td>
                 </tr>
               </>
             ))}
           </tbody>
         </table>
-        <button onClick={handleShowMoreData} className="viewmorebtn">view More</button>
+        <button onClick={handleShowMoreData} className="viewmorebtn">
+          view More
+        </button>
       </div>
     </>
   );
