@@ -23,7 +23,7 @@
 }
 .navbarLeft{
     margin-left: 140px;
-    width: 300px;
+    width: 250px;
     align-items: center;
     justify-content: space-between;
 }
@@ -31,4 +31,16 @@ ul,a{
 list-style: none;
 text-decoration: none;
 color: black;
+}
+.searchContainer{
+    border: 1px solid black;
+    border-radius: 4px;
+    padding:0 4px;
+}
+.searchBar{
+    border: none;
+    outline: none;
+}
+.logo{
+    width: 80px;
 }
