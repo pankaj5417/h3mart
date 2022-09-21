@@ -1,31 +1,34 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
 import "./cryptocurrencies.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getCryptoData } from "../../redux/crypto/cryptoActionCreator";
 
-export const Cryptocurrencies = () => {
-  const [crypto, setCrypto] = useState([]);
+export const Cryptocurrencies2 = () => {
+
+    const dispatch = useDispatch();
+    const { loading,  crypto ,err} = useSelector((state) => ({
+      loading: state.cryptos.isLoading,
+      err: state.cryptos.isError,
+      crypto: state.cryptos.cryptoData,
+    }));
+
 
   const [next, setNext] = useState(50);
 
   useEffect(() => {
-    getCryptoData();
+    dispatch(getCryptoData());
   }, []);
 
-  const getCryptoData = async () => {
-    const res = await axios.get(`https://api.coincap.io/v2/assets`);
-    setCrypto(res.data.data);
-
-    console.log("cryptoData", res.data);
-  };
+console.log("loading",loading)
 
   const handleShowMoreData = () => {
     setNext((prev) => prev + 50);
   };
 
   return (
-    <>
-      <div className="cryptoContainer container w-75">
+    <>{loading&&<h2 style={{textAlign:"center",color:"black",marginTop:"80px"}}>Loading...</h2>}
+     {crypto&& <div className="cryptoContainer container w-75">
         <table className="table table-container">
           <thead>
             <tr>
@@ -42,7 +45,7 @@ export const Cryptocurrencies = () => {
             </tr>
           </thead>
           <tbody>
-            {crypto.slice(0, next)?.map((item, index) => (
+            {crypto?.slice(0, next)?.map((item, index) => (
               <>
                 <tr key={index}>
                   <th scope="row">{item.rank}</th>
@@ -76,6 +79,7 @@ export const Cryptocurrencies = () => {
           view More
         </button>
       </div>
+}
     </>
   );
 };

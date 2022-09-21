@@ -1,12 +1,12 @@
 import './App.css';
-import { Cryptocurrencies } from './components/cryptocurrencies/Cryptocurrencies';
+import { Cryptocurrencies2 } from './components/cryptocurrencies/Cryptocurrencies2';
 import { Navbar } from './components/Navbar/Navbar';
 
 function App() {
   return (
     <div className="App">
       <Navbar/>
-      <Cryptocurrencies/>
+      <Cryptocurrencies2/>
     </div>
   );
 }
